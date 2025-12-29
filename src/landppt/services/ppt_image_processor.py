@@ -412,7 +412,7 @@ class PPTImageProcessor:
             selected_images = await self._search_multiple_local_images(search_keywords, requirement.count)
 
             for image_id in selected_images:
-                relative_url = f"/api/image/view/{image_id}"
+                relative_url = f"/landppt/api/image/view/{image_id}"
                 absolute_url = self._build_absolute_image_url(relative_url)
 
                 # 获取图片详细信息

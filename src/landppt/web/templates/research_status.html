@@ -198,7 +198,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 async function checkServiceStatus() {
     try {
-        const response = await fetch('/api/research/status');
+        const response = await fetch('/landppt/api/research/status');
         const data = await response.json();
         
         const statusContainer = document.getElementById('service-status');
@@ -238,7 +238,7 @@ async function checkServiceStatus() {
 
 async function loadReportsList() {
     try {
-        const response = await fetch('/api/research/reports');
+        const response = await fetch('/landppt/api/research/reports');
         const data = await response.json();
         
         const reportsContainer = document.getElementById('reports-list');
@@ -299,7 +299,7 @@ async function testResearch() {
     resultDiv.innerHTML = '<p style="color: #007bff;">正在进行DEEP研究，请稍候...</p>';
     
     try {
-        const response = await fetch('/api/research/conduct', {
+        const response = await fetch('/landppt/api/research/conduct', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -350,7 +350,7 @@ async function deleteReport(filename) {
     }
     
     try {
-        const response = await fetch(`/api/research/reports/${encodeURIComponent(filename)}`, {
+        const response = await fetch(`/landppt/api/research/reports/${encodeURIComponent(filename)}`, {
             method: 'DELETE'
         });
         

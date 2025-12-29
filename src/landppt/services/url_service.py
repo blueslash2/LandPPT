@@ -57,15 +57,15 @@ class URLService:
     
     def build_image_url(self, image_id: str) -> str:
         """构建图片访问URL"""
-        return self.build_absolute_url(f"/api/image/view/{image_id}")
+        return self.build_absolute_url(f"/landppt/api/image/view/{image_id}")
     
     def build_image_thumbnail_url(self, image_id: str) -> str:
         """构建图片缩略图URL"""
-        return self.build_absolute_url(f"/api/image/thumbnail/{image_id}")
+        return self.build_absolute_url(f"/landppt/api/image/thumbnail/{image_id}")
     
     def build_image_download_url(self, image_id: str) -> str:
         """构建图片下载URL"""
-        return self.build_absolute_url(f"/api/image/download/{image_id}")
+        return self.build_absolute_url(f"/landppt/api/image/download/{image_id}")
     
     def build_static_url(self, static_path: str) -> str:
         """构建静态资源URL"""

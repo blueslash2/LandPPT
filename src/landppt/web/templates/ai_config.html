@@ -2777,7 +2777,7 @@
             const category = categoryMap[tabName];
             if (!category) return;
 
-            const response = await fetch(`/api/config/${category}`);
+            const response = await fetch(`/landppt/api/config/${category}`);
             if (response.ok) {
                 const result = await response.json();
                 if (result.success) {
@@ -2887,7 +2887,7 @@
 
             // 如果前端没有填写API Key，尝试从后端获取
             if (!apiKey) {
-                const configResponse = await fetch('/api/config/ai_providers');
+                const configResponse = await fetch('/landppt/api/config/ai_providers');
                 if (configResponse.ok) {
                     const configResult = await configResponse.json();
                     if (configResult.success && configResult.config.openai_api_key) {
@@ -2917,7 +2917,7 @@
             }
 
             // 只通过后端代理测试，避免CORS问题
-            const proxyResponse = await fetch('/api/ai/providers/openai/test', {
+            const proxyResponse = await fetch('/landppt/api/ai/providers/openai/test', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -2998,7 +2998,7 @@
 
             // 如果前端没有输入API Key，尝试从后端获取
             if (!apiKey) {
-                const configResponse = await fetch('/api/config/ai_providers');
+                const configResponse = await fetch('/landppt/api/config/ai_providers');
                 if (configResponse.ok) {
                     const configResult = await configResponse.json();
                     if (configResult.success && configResult.config.anthropic_api_key) {
@@ -3066,7 +3066,7 @@
 
             // 如果前端没有输入API Key或Base URL，尝试从后端获取
             if (!apiKey || !config.google_base_url) {
-                const configResponse = await fetch('/api/config/ai_providers');
+                const configResponse = await fetch('/landppt/api/config/ai_providers');
                 if (configResponse.ok) {
                     const configResult = await configResponse.json();
                     if (configResult.success) {
@@ -3175,7 +3175,7 @@
 
             // 如果前端没有输入，尝试从后端获取
             if (!apiKey || !endpoint || !deploymentName) {
-                const configResponse = await fetch('/api/config/ai_providers');
+                const configResponse = await fetch('/landppt/api/config/ai_providers');
                 if (configResponse.ok) {
                     const configResult = await configResponse.json();
                     if (configResult.success) {
@@ -3248,7 +3248,7 @@
             let model = config.ollama_model || 'llama2';
 
             // 调用 Ollama API 进行测试
-            const response = await fetch(`${baseUrl}/api/generate`, {
+            const response = await fetch(`/landppt/api/generate`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -3308,7 +3308,7 @@
 
             // 如果前端没有填写API Key，尝试从后端获取
             if (!apiKey) {
-                const configResponse = await fetch('/api/config/ai_providers');
+                const configResponse = await fetch('/landppt/api/config/ai_providers');
                 if (configResponse.ok) {
                     const configResult = await configResponse.json();
                     if (configResult.success && configResult.config['302ai_api_key']) {
@@ -3391,7 +3391,7 @@
     // 配置管理功能
     async function loadAllConfigs() {
         try {
-            const response = await fetch('/api/config/all');
+            const response = await fetch('/landppt/api/config/all');
             if (response.ok) {
                 const result = await response.json();
                 if (result.success) {
@@ -3756,7 +3756,7 @@
         try {
             showLoading('正在设置默认提供者...');
 
-            const response = await fetch('/api/config/default-provider', {
+            const response = await fetch('/landppt/api/config/default-provider', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -3811,7 +3811,7 @@
 
         try {
             // showLoading('正在保存模型任务配置...');
-            const response = await fetch('/api/config/model_roles', {
+            const response = await fetch('/landppt/api/config/model_roles', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -3863,7 +3863,7 @@
         try {
             showLoading(`正在保存 ${provider} 配置...`);
 
-            const response = await fetch('/api/config/ai_providers', {
+            const response = await fetch('/landppt/api/config/ai_providers', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -3957,7 +3957,7 @@
         });
 
         try {
-            const response = await fetch('/api/config/generation_params', {
+            const response = await fetch('/landppt/api/config/generation_params', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -4003,7 +4003,7 @@
         });
 
         try {
-            const response = await fetch('/api/config/app_config', {
+            const response = await fetch('/landppt/api/config/app_config', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -4067,7 +4067,7 @@
                 }
             });
 
-            const response = await fetch('/api/config/all', {
+            const response = await fetch('/landppt/api/config/all', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -4251,7 +4251,7 @@
     // 图片服务相关功能
     async function checkImageServiceStatus() {
         try {
-            const response = await fetch('/api/image/status');
+            const response = await fetch('/landppt/api/image/status');
             if (response.ok) {
                 const result = await response.json();
                 updateImageServiceStatus(result);
@@ -4374,7 +4374,7 @@
         });
 
         try {
-            const response = await fetch('/api/config/image_service', {
+            const response = await fetch('/landppt/api/config/image_service', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -4529,7 +4529,7 @@
             // 如果前端没有填写API Key，尝试从后端获取
             if (!apiKey) {
                 try {
-                    const configResponse = await fetch('/api/config/ai_providers');
+                    const configResponse = await fetch('/landppt/api/config/ai_providers');
                     if (configResponse.ok) {
                         const configResult = await configResponse.json();
                         if (configResult.success && configResult.config.openai_api_key) {
@@ -4625,7 +4625,7 @@
             // 如果前端没有填写API Key，尝试从后端获取
             if (!apiKey) {
                 try {
-                    const configResponse = await fetch('/api/config/ai_providers');
+                    const configResponse = await fetch('/landppt/api/config/ai_providers');
                     if (configResponse.ok) {
                         const configResult = await configResponse.json();
                         if (configResult.success && configResult.config['302ai_api_key']) {
@@ -4778,7 +4778,7 @@
     async function fetchOpenAIModels(baseUrl, apiKey) {
         try {
             // 只通过后端代理请求，避免CORS问题
-            const response = await fetch('/api/ai/providers/openai/models', {
+            const response = await fetch('/landppt/api/ai/providers/openai/models', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

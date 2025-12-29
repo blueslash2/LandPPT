@@ -111,7 +111,7 @@
     {% if ai_provider %}
     <div class="provider-badge">
         <span>当前 AI 提供者: <strong>{{ ai_provider }}</strong></span>
-        <a href="/ai-config" class="btn-outline" style="padding: 6px 14px; border-radius: var(--border-radius-sm); text-decoration: none; font-size: 0.9rem;">系统配置</a>
+        <a href="/landppt/ai-config" class="btn-outline" style="padding: 6px 14px; border-radius: var(--border-radius-sm); text-decoration: none; font-size: 0.9rem;">系统配置</a>
     </div>
     {% endif %}
 </div>
@@ -120,19 +120,19 @@
     <div class="card action-card">
         <h3>快速生成</h3>
         <p>选择场景模板，输入主题，一键生成专业 PPT。</p>
-        <a href="/scenarios" class="btn btn-monochrome">开始创建 PPT</a>
+        <a href="/landppt/scenarios" class="btn btn-monochrome">开始创建 PPT</a>
     </div>
     
     <div class="card action-card">
         <h3>项目仪表板</h3>
         <p>管理项目、查看 TODO 看板与进度跟踪，掌握项目全局。</p>
-        <a href="/dashboard" class="btn btn-monochrome">打开仪表板</a>
+        <a href="/landppt/dashboard" class="btn btn-monochrome">打开仪表板</a>
     </div>
 </div>
 
 <div class="info-panel">
     <h4>API 接口支持</h4>
     <p>LandPPT 提供完整的 OpenAI 兼容 API，支持与现有工具和客户端无缝集成。</p>
-    <a href="/docs" class="btn btn-monochrome">查看 API 文档</a>
+    <a href="/landppt/docs" class="btn btn-monochrome">查看 API 文档</a>
 </div>
 {% endblock %}

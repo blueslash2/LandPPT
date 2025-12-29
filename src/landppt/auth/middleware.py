@@ -23,28 +23,28 @@ class AuthMiddleware:
         # 不需要认证的路径
         self.public_paths = {
             "/",
-            "/auth/login",
-            "/auth/logout",
-            "/api/auth/login",
-            "/api/auth/logout",
-            "/api/auth/check",
-            "/docs",
-            "/redoc",
-            "/openapi.json",
-            "/static",
-            "/favicon.ico"
+            "/landppt/auth/login",
+            "/landppt/auth/logout",
+            "/landppt/api/auth/login",
+            "/landppt/api/auth/logout",
+            "/landppt/api/auth/check",
+            "/landppt/docs",
+            "/landppt/redoc",
+            "/landppt/openapi.json",
+            "/landppt/static",
+            "/landppt/favicon.ico"
         }
         # 不需要认证的路径前缀
         self.public_prefixes = [
-            "/static/",
-            "/temp/",  # 添加temp目录用于图片缓存访问
-            "/api/image/view/",  # 图床图片访问无需认证
-            "/api/image/thumbnail/",  # 图片缩略图访问无需认证
-            "/share/",  # 公开分享链接无需认证
-            "/api/share/",  # 分享API无需认证
-            "/docs",
-            "/redoc",
-            "/openapi.json"
+            "/landppt/static/",
+            "/landppt/temp/",  # 添加temp目录用于图片缓存访问
+            "/landppt/api/image/view/",  # 图床图片访问无需认证
+            "/landppt/api/image/thumbnail/",  # 图片缩略图访问无需认证
+            "/landppt/share/",  # 公开分享链接无需认证
+            "/landppt/api/share/",  # 分享API无需认证
+            "/landppt/docs",
+            "/landppt/redoc",
+            "/landppt/openapi.json"
         ]
     
     def is_public_path(self, path: str) -> bool:
@@ -83,7 +83,7 @@ class AuthMiddleware:
                 )
             else:
                 # Web endpoints redirect to login
-                return RedirectResponse(url="/auth/login", status_code=302)
+                return RedirectResponse(url="/landppt/auth/login", status_code=302)
         
         # Validate session
         try:
@@ -103,7 +103,7 @@ class AuthMiddleware:
                             media_type="application/json"
                         )
                     else:
-                        response = RedirectResponse(url="/auth/login", status_code=302)
+                        response = RedirectResponse(url="/landppt/auth/login", status_code=302)
                         response.delete_cookie("session_id")
                         return response
 
@@ -126,7 +126,7 @@ class AuthMiddleware:
                     media_type="application/json"
                 )
             else:
-                return RedirectResponse(url="/auth/login", status_code=302)
+                return RedirectResponse(url="/landppt/auth/login", status_code=302)
 
 
 def get_current_user(request: Request) -> Optional[User]:

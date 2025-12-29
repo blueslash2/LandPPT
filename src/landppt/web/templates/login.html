@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>登录 - LandPPT</title>
-    <link rel="icon" type="image/svg+xml" href="/static/images/landppt-logo.png">
-    <link rel="alternate icon" href="/static/images/favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="/landppt/static/images/landppt-logo.png">
+    <link rel="alternate icon" href="/landppt/static/images/favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         @import url('https://fonts.loli.net/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
@@ -304,6 +304,7 @@
             }
         }
     </style>
+
 </head>
 
 <body>
@@ -313,7 +314,7 @@
             <div class="brand-pattern"></div>
             <div class="brand-content">
                 <div class="brand-logo">
-                    <img src="/static/images/landppt-logo.png" alt="LandPPT Logo">
+                    <img src="/landppt/static/images/landppt-logo.png" alt="LandPPT Logo">
                     <span style="font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em;">LandPPT</span>
                 </div>
                 <h1 class="brand-title">
@@ -349,7 +350,7 @@
                 </div>
                 {% endif %}
 
-                <form method="post" action="/auth/login" id="loginForm">
+                <form method="post" action="/landppt/auth/login" id="loginForm">
                     <div class="form-group">
                         <label for="username">用户名</label>
                         <div class="input-wrapper">

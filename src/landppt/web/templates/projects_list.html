@@ -432,8 +432,8 @@
         </div>
 
         <div class="table-action-group">
-            <a href="/scenarios" class="action-btn action-btn--primary">创建新项目</a>
-            <a href="/dashboard" class="action-btn">查看仪表板</a>
+            <a href="/landppt/scenarios" class="action-btn action-btn--primary">创建新项目</a>
+            <a href="/landppt/dashboard" class="action-btn">查看仪表板</a>
         </div>
     </div>
 
@@ -454,7 +454,7 @@
         <!-- Projects List Items -->
         <div class="projects-table-body">
             {% for project in projects %}
-            <div class="project-list-item" onclick="window.location.href='/projects/{{ project.project_id }}'">
+            <div class="project-list-item" onclick="window.location.href='/landppt/projects/{{ project.project_id }}'">
                 <!-- Status Icon -->
                 <div class="project-status">
                     {% if project.status == 'completed' %}
@@ -509,14 +509,14 @@
                 <!-- Actions -->
                 <div class="table-action-group" onclick="event.stopPropagation();">
                     {% if project.status == 'completed' %}
-                        <a href="/projects/{{ project.project_id }}/edit" class="action-btn" title="编辑PPT">
+                        <a href="/landppt/projects/{{ project.project_id }}/edit" class="action-btn" title="编辑PPT">
                             编辑
                         </a>
-                        <a href="/projects/{{ project.project_id }}/fullscreen" class="action-btn" title="预览PPT" target="_blank">
+                        <a href="/landppt/projects/{{ project.project_id }}/fullscreen" class="action-btn" title="预览PPT" target="_blank">
                             预览
                         </a>
                     {% elif project.status == 'in_progress' %}
-                        <a href="/projects/{{ project.project_id }}/todo" class="action-btn" title="查看看板">
+                        <a href="/landppt/projects/{{ project.project_id }}/todo" class="action-btn" title="查看看板">
                             查看进度
                         </a>
                     {% endif %}
@@ -573,9 +573,9 @@
             {% endif %}
         </p>
         <div class="table-action-group" style="justify-content: center; flex-wrap: wrap;">
-            <a href="/scenarios" class="action-btn action-btn--primary">创建项目</a>
+            <a href="/landppt/scenarios" class="action-btn action-btn--primary">创建项目</a>
             {% if status_filter %}
-            <a href="/projects" class="action-btn">查看全部</a>
+            <a href="/landppt/projects" class="action-btn">查看全部</a>
             {% endif %}
         </div>
     </div>
@@ -739,7 +739,7 @@ async function executeDeleteProject() {
     }
 
     try {
-        const response = await fetch(`/api/database/projects/${currentDeleteProjectId}`, {
+        const response = await fetch(`/landppt/api/database/projects/${currentDeleteProjectId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'

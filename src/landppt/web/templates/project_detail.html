@@ -432,13 +432,13 @@
         <!-- Project Actions -->
         <div class="action-group">
             {% if project.status == 'in_progress' and todo_board %}
-            <a href="/projects/{{ project.project_id }}/todo" class="btn btn-primary action-button">
+            <a href="/landppt/projects/{{ project.project_id }}/todo" class="btn btn-primary action-button">
                 查看 TODO 看板
             </a>
             {% endif %}
 
             {% if project.status == 'completed' and project.slides_html %}
-            <a href="/projects/{{ project.project_id }}/fullscreen" class="btn btn-success action-button" target="_blank">
+            <a href="/landppt/projects/{{ project.project_id }}/fullscreen" class="btn btn-success action-button" target="_blank">
                 预览 PPT
             </a>
             {% endif %}
@@ -494,32 +494,32 @@
                 <div style="margin-left: 15px;">
                     {% if stage.status == 'pending' %}
                         {% if stage.id == 'requirements_confirmation' %}
-                            <a href="/projects/{{ project.project_id }}/todo" class="btn btn-primary" style="font-size: 0.8em; padding: 6px 12px;">
+                            <a href="/landppt/projects/{{ project.project_id }}/todo" class="btn btn-primary" style="font-size: 0.8em; padding: 6px 12px;">
                                 开始
                             </a>
                         {% elif stage.id == 'outline_generation' %}
-                            <a href="/projects/{{ project.project_id }}/todo" class="btn btn-primary" style="font-size: 0.8em; padding: 6px 12px;">
+                            <a href="/landppt/projects/{{ project.project_id }}/todo" class="btn btn-primary" style="font-size: 0.8em; padding: 6px 12px;">
                                 生成大纲
                             </a>
                         {% elif stage.id == 'ppt_creation' %}
-                            <a href="/projects/{{ project.project_id }}/todo" class="btn btn-primary btn-sm">
+                            <a href="/landppt/projects/{{ project.project_id }}/todo" class="btn btn-primary btn-sm">
                                 生成PPT
                             </a>
                         {% else %}
-                            <a href="/projects/{{ project.project_id }}/todo" class="btn btn-primary btn-sm">
+                            <a href="/landppt/projects/{{ project.project_id }}/todo" class="btn btn-primary btn-sm">
                                 开始
                             </a>
                         {% endif %}
                     {% elif stage.status == 'running' %}
-                        <a href="/projects/{{ project.project_id }}/todo" class="btn btn-info btn-sm">
+                        <a href="/landppt/projects/{{ project.project_id }}/todo" class="btn btn-info btn-sm">
                             查看进度
                         </a>
                     {% elif stage.status == 'completed' %}
-                        <a href="/projects/{{ project.project_id }}/todo" class="btn btn-success btn-sm">
+                        <a href="/landppt/projects/{{ project.project_id }}/todo" class="btn btn-success btn-sm">
                             已完成
                         </a>
                     {% elif stage.status == 'failed' %}
-                        <a href="/projects/{{ project.project_id }}/todo" class="btn btn-warning btn-sm">
+                        <a href="/landppt/projects/{{ project.project_id }}/todo" class="btn btn-warning btn-sm">
                             重试
                         </a>
                     {% endif %}
@@ -710,10 +710,10 @@
 
 <!-- Navigation -->
 <div style="text-align: center; margin-top: 40px;">
-    <a href="/projects" class="btn" style="background: #1f2933; color: white; margin: 0 10px;">
+    <a href="/landppt/projects" class="btn" style="background: #1f2933; color: white; margin: 0 10px;">
         返回项目列表
     </a>
-    <a href="/dashboard" class="btn btn-primary" style="margin: 0 10px;">
+    <a href="/landppt/dashboard" class="btn btn-primary" style="margin: 0 10px;">
         项目仪表板
     </a>
 </div>
@@ -728,7 +728,7 @@ const projectSlides = {{ project.outline.get('slides', []) | tojson if project.o
 async function archiveProject() {
     if (confirm('确定要归档这个项目吗？归档后项目将不会显示在活跃项目列表中。')) {
         try {
-            const response = await fetch(`/api/projects/${projectId}/archive`, {
+            const response = await fetch(`/landppt/api/projects/${projectId}/archive`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -737,7 +737,7 @@ async function archiveProject() {
             
             if (response.ok) {
                 alert('项目已归档');
-                window.location.href = '/projects';
+                window.location.href = '/landppt/projects';
             } else {
                 alert('归档失败，请重试');
             }
@@ -758,7 +758,7 @@ async function deleteProject() {
                 deleteBtn.innerHTML = '删除中...';
                 deleteBtn.disabled = true;
 
-                const response = await fetch(`/api/database/projects/${projectId}`, {
+                const response = await fetch(`/landppt/api/database/projects/${projectId}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
@@ -769,7 +769,7 @@ async function deleteProject() {
 
                 if (response.ok) {
                     alert('项目删除成功！');
-                    window.location.href = '/projects';
+                    window.location.href = '/landppt/projects';
                 } else {
                     throw new Error(result.detail || '删除失败');
                 }
@@ -914,7 +914,7 @@ async function saveOutlineChanges() {
     try {
         const newOutline = JSON.parse(editor.value);
 
-        const response = await fetch(`/projects/${projectId}/update-outline`, {
+        const response = await fetch(`/landppt/projects/${projectId}/update-outline`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -1158,7 +1158,7 @@ async function saveSingleSlideChanges(slideIndex) {
         updatedOutline.slides[slideIndex] = updatedSlide;
 
         // 发送到服务器
-        const response = await fetch(`/projects/${projectId}/update-outline`, {
+        const response = await fetch(`/landppt/projects/${projectId}/update-outline`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -1199,7 +1199,7 @@ async function saveSingleSlideChanges(slideIndex) {
 async function restoreVersion(version) {
     if (confirm(`确定要恢复到版本 v${version} 吗？当前未保存的更改将丢失。`)) {
         try {
-            const response = await fetch(`/api/projects/${projectId}/versions/${version}/restore`, {
+            const response = await fetch(`/landppt/api/projects/${projectId}/versions/${version}/restore`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -1623,7 +1623,7 @@ async function aiOptimizeFullOutlineInProjectDetail() {
 
     try {
         // 调用AI优化接口
-        const response = await fetch('/api/ai/optimize-outline', {
+        const response = await fetch('/landppt/api/ai/optimize-outline', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -1745,7 +1745,7 @@ async function aiOptimizeSingleSlideInProjectDetail(slideIndex) {
         const outlineContent = JSON.stringify(projectOutline);
 
         // 调用AI优化接口
-        const response = await fetch('/api/ai/optimize-outline', {
+        const response = await fetch('/landppt/api/ai/optimize-outline', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

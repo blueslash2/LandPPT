@@ -221,7 +221,7 @@ async function loadProviderStatus() {
     statusCards.innerHTML = '<div style="text-align: center; padding: 20px; color: #6c757d; grid-column: 1 / -1;">加载中...</div>';
 
     try {
-        const response = await fetch('/api/image/status');
+        const response = await fetch('/landppt/api/image/status');
         const data = await response.json();
 
         statusCards.innerHTML = '';
@@ -300,7 +300,7 @@ document.getElementById('generation-form').addEventListener('submit', async func
     }, 1000);
 
     try {
-        const response = await fetch('/api/image/generate', {
+        const response = await fetch('/landppt/api/image/generate', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -409,7 +409,7 @@ function showResult(data, prompt, provider, totalTime) {
         <div style="text-align: center; margin-bottom: 20px;">
             <img src="${imageUrl}" alt="Generated Image"
                  style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);"
-                 onerror="this.onerror=null; this.src='/static/images/placeholder.svg'; this.alt='图片加载失败';">
+                 onerror="this.onerror=null; this.src='/landppt/static/images/placeholder.svg'; this.alt='图片加载失败';">
         </div>
         <div style="display: flex; gap: 10px; justify-content: center;">
             <a href="${imageUrl}" download style="background: #0f0f0f; color: white; padding: 10px 20px; text-decoration: none; border-radius: 6px; font-weight: 500; display: inline-flex; align-items: center; gap: 8px;">
@@ -529,7 +529,7 @@ function renderHistory() {
 
     container.innerHTML = generationHistory.map(item => `
         <div class="history-item" onclick="viewHistoryItem(${item.id})">
-            <img src="${item.imageUrl}" alt="Generated Image" onerror="this.src='/static/images/placeholder.svg';">
+            <img src="${item.imageUrl}" alt="Generated Image" onerror="this.src='/landppt/static/images/placeholder.svg';">
             <div class="history-item-info">
                 <div style="font-weight: 500; color: #111111; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                     ${item.prompt.substring(0, 30)}${item.prompt.length > 30 ? '...' : ''}

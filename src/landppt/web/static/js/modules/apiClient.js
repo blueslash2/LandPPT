@@ -2,8 +2,18 @@ const defaultHeaders = {
     'Content-Type': 'application/json'
 };
 
+// Hardcoded base path for /landppt prefix
+function getBasePath() {
+    return '/landppt';
+}
+
 async function request(url, options = {}) {
     const { method = 'GET', body, headers = {}, signal, responseType, returnResponse = false } = options;
+    
+    // 添加基础路径到URL
+    const basePath = getBasePath();
+    const fullUrl = url.startsWith('/') ? basePath + url : url;
+    
     const init = {
         method,
         headers: body instanceof FormData ? headers : { ...defaultHeaders, ...headers },
@@ -12,7 +22,7 @@ async function request(url, options = {}) {
         credentials: 'same-origin'
     };
 
-    const response = await fetch(url, init);
+    const response = await fetch(fullUrl, init);
     const contentType = response.headers.get('content-type') || '';
     const expectedType = responseType || (contentType.includes('application/json') ? 'json' : 'text');
     let payload;

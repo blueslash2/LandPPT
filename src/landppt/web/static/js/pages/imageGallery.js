@@ -106,7 +106,7 @@ function renderImageGrid() {
         const img = document.createElement('img');
         img.alt = image.title || image.filename;
         img.className = 'image-thumbnail';
-        img.dataset.src = `${window.location.origin}/api/image/thumbnail/${image.image_id}`;
+        img.dataset.src = `${window.location.origin}/landppt/api/image/thumbnail/${image.image_id}`;
         img.src = placeholderSrc;
         img.onerror = () => { img.src = placeholderSrc; };
         lazyObserver.observe(img);
@@ -554,7 +554,7 @@ async function clearAllImages() {
 
 // 单张图片操作
 async function copySingleImageUrl(imageId) {
-    const url = `${window.location.origin}/api/image/view/${imageId}`;
+    const url = `${window.location.origin}/landppt/api/image/view/${imageId}`;
 
     try {
         await navigator.clipboard.writeText(url);
@@ -771,7 +771,7 @@ async function showImageDetail(imageId) {
 
             // 填充详情信息
             document.getElementById('image-detail-title').textContent = data.image.title || data.image.filename;
-            document.getElementById('detail-image').src = `${window.location.origin}/api/image/view/${imageId}`;
+            document.getElementById('detail-image').src = `${window.location.origin}/landppt/api/image/view/${imageId}`;
 
             // 填充可编辑的图片信息
             document.getElementById('display-title').textContent = data.image.title || '未设置';
@@ -818,7 +818,7 @@ async function downloadImage() {
 async function copyImageUrl() {
     if (!currentImageDetail) return;
 
-    const url = `${window.location.origin}/api/image/view/${currentImageDetail.image_id}`;
+    const url = `${window.location.origin}/landppt/api/image/view/${currentImageDetail.image_id}`;
 
     try {
         await navigator.clipboard.writeText(url);

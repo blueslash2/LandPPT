@@ -146,7 +146,7 @@ class ShareService:
             return {
                 "enabled": project.share_enabled,
                 "share_token": project.share_token,
-                "share_url": f"/share/{project.share_token}" if project.share_token else None
+                "share_url": f"/landppt/share/{project.share_token}" if project.share_token else None
             }
 
         except Exception as e:

@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PPT编辑器 - {{ project.title }}</title>
-    <link rel="icon" type="image/svg+xml" href="/static/images/favicon.svg">
-    <link rel="alternate icon" href="/favicon.ico">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="/landppt/static/images/favicon.svg">
+    <link rel="alternate icon" href="/landppt/favicon.ico">
+    <link href="http://ai.byfunds.com/hystatic/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <!-- CodeMirror CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
@@ -4401,6 +4401,8 @@
             background: var(--text-secondary);
         }
     </style>
+
+    
 </head>
 <body>
     <div class="editor-container">
@@ -4412,7 +4414,7 @@
                     <p class="mb-0">{{ project.title }} - 共 {{ project.slides_data|length if project.slides_data else 0 }} 页</p>
                 </div>
                 <div>
-                    <a href="/dashboard" class="btn btn-outline-light">
+                    <a href="/landppt/dashboard" class="btn btn-outline-light">
                         <i class="fas fa-tasks"></i> 返回主页
                     </a>
                 </div>
@@ -4846,7 +4848,7 @@
     <script id="projectSlidesScript" type="application/json">{{ {'slides': project.slides_data or []}|tojson|safe }}</script>
     <script id="projectMetaScript" type="application/json">{{ {'status': project.status, 'outline': project.outline}|tojson|safe }}</script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="http://ai.byfunds.com/hystatic/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         let currentSlideIndex = 0;
         let currentMode = 'preview';
@@ -5965,7 +5967,7 @@
                 };
 
                 // 发送重新生成请求
-                const response = await fetch('/api/ai/regenerate-image', {
+                const response = await fetch('/landppt/api/ai/regenerate-image', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -6179,7 +6181,7 @@
 
                 const targetProjectId = projectId || slideInfo.project_id;
                 updateProgressToast(progressToast, '正在调用智能排版诊断...', 40);
-                const response = await fetch(`/api/projects/${targetProjectId}/slides/${currentSlideIndex + 1}/auto-repair-layout`, {
+                const response = await fetch(`/landppt/api/projects/${targetProjectId}/slides/${currentSlideIndex + 1}/auto-repair-layout`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -6268,7 +6270,7 @@
                 };
 
                 // 发送一键配图请求
-                const response = await fetch('/api/ai/auto-generate-slide-images', {
+                const response = await fetch('/landppt/api/ai/auto-generate-slide-images', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -6963,7 +6965,7 @@
 
             while (hasMore) {
                 try {
-                    const response = await fetch(`/api/image/gallery/list?page=${currentPage}&per_page=50`);
+                    const response = await fetch(`/landppt/api/image/gallery/list?page=${currentPage}&per_page=50`);
 
                     if (!response.ok) {
                         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -7709,7 +7711,7 @@
 
             try {
                 // 保存大纲到数据库
-                const response = await fetch(`/projects/{{ project.project_id }}/update-outline`, {
+                const response = await fetch(`/landppt/projects/{{ project.project_id }}/update-outline`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -7759,7 +7761,7 @@
         // 获取项目选择的全局母版模板
         async function getSelectedGlobalTemplate() {
             try {
-                const response = await fetch(`/api/projects/{{ project.project_id }}/selected-global-template`);
+                const response = await fetch(`/landppt/api/projects/{{ project.project_id }}/selected-global-template`);
                 if (!response.ok) {
                     return null;
                 }
@@ -7835,7 +7837,7 @@
                 }
 
                 // 保存更新后的大纲到数据库
-                const response = await fetch(`/projects/{{ project.project_id }}/update-outline`, {
+                const response = await fetch(`/landppt/projects/{{ project.project_id }}/update-outline`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -7939,7 +7941,7 @@
 
 
                 // 发送流式AI编辑请求
-                const response = await fetch('/api/ai/slide-edit/stream', {
+                const response = await fetch('/landppt/api/ai/slide-edit/stream', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -8481,7 +8483,7 @@
                 document.body.appendChild(loadingDiv);
 
                 // Call API to regenerate slide
-                fetch(`/api/projects/{{ project.project_id }}/slides/${slideIndex + 1}/regenerate`, {
+                fetch(`/landppt/api/projects/{{ project.project_id }}/slides/${slideIndex + 1}/regenerate`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -8581,7 +8583,7 @@
                 });
 
                 // 使用批量保存API
-                const response = await fetch(`/api/projects/{{ project.project_id }}/slides/batch-save`, {
+                const response = await fetch(`/landppt/api/projects/{{ project.project_id }}/slides/batch-save`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -8655,7 +8657,7 @@
         async function cleanupExcessSlides() {
             try {
 
-                const response = await fetch(`/api/projects/{{ project.project_id }}/slides/cleanup`, {
+                const response = await fetch(`/landppt/api/projects/{{ project.project_id }}/slides/cleanup`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -8709,7 +8711,7 @@
 
 
 
-                const response = await fetch(`/api/projects/{{ project.project_id }}/slides/${slideIndex}/save`, {
+                const response = await fetch(`/landppt/api/projects/{{ project.project_id }}/slides/${slideIndex}/save`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -8744,7 +8746,7 @@
             updateProgressToast(progressToast, '正在生成PDF文件...', 20);
 
             try {
-                triggerFileDownload(`/api/projects/{{ project.project_id }}/export/pdf`);
+                triggerFileDownload(`/landppt/api/projects/{{ project.project_id }}/export/pdf`);
 
                 updateProgressToast(progressToast, '正在准备下载...', 60);
                 await new Promise(resolve => setTimeout(resolve, 1200));
@@ -8765,7 +8767,7 @@
             // showNotification('正在打开客户端PDF导出页面...', 'info');
 
             // 打开客户端PDF导出页面（原html2pdf.js方式）
-           // window.open(`/api/projects/{{ project.project_id }}/export/pdf?fallback=true`, '_blank');
+           // window.open(`/landppt/api/projects/{{ project.project_id }}/export/pdf?fallback=true`, '_blank');
         }
 
         async function exportToPPTX() {
@@ -8779,7 +8781,7 @@
             updateProgressToast(progressToast, '正在准备导出文件...', 10);
 
             try {
-                const response = await fetch(`/api/projects/{{ project.project_id }}/export/pptx`);
+                const response = await fetch(`/landppt/api/projects/{{ project.project_id }}/export/pptx`);
                 if (!response.ok) {
                     throw new Error(`服务返回异常(${response.status})`);
                 }
@@ -8830,7 +8832,7 @@
                 const poll = async () => {
                     attempts += 1;
                     try {
-                        const response = await fetch(`/api/landppt/tasks/${taskId}`);
+                        const response = await fetch(`/landppt/api/landppt/tasks/${taskId}`);
                         if (!response.ok) {
                             throw new Error(`任务状态查询失败(${response.status})`);
                         }
@@ -8841,7 +8843,7 @@
                             updateProgressToast(progressToast, '转换完成，正在准备下载...', 100);
                             clearPptxExportPolling();
                             setTimeout(() => closeProgressToast(progressToast), 400);
-                            const downloadUrl = data.download_url || `/api/landppt/tasks/${taskId}/download`;
+                            const downloadUrl = data.download_url || `/landppt/api/landppt/tasks/${taskId}/download`;
                             triggerFileDownload(downloadUrl);
                             showNotification('PPTX转换完成，正在下载...', 'success');
                             resolve();
@@ -8924,7 +8926,7 @@
                 updateProgressToast(progressToast, '正在发送到服务器进行高质量渲染...', 20);
 
                 // 发送HTML内容到后端，让后端使用Playwright进行截图和生成PPTX
-                const response = await fetch(`/api/projects/{{ project.project_id }}/export/pptx-images`, {
+                const response = await fetch(`/landppt/api/projects/{{ project.project_id }}/export/pptx-images`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -8976,7 +8978,7 @@
 
             // 创建下载链接
             const downloadLink = document.createElement('a');
-            downloadLink.href = `/api/projects/{{ project.project_id }}/export/html`;
+            downloadLink.href = `/landppt/api/projects/{{ project.project_id }}/export/html`;
             downloadLink.download = '';
             downloadLink.style.display = 'none';
 
@@ -9084,7 +9086,7 @@
                 showNotification('正在生成分享链接...', 'info');
 
                 // 调用API生成分享链接
-                const response = await fetch(`/api/projects/{{ project.project_id }}/share/generate`, {
+                const response = await fetch(`/landppt/api/projects/{{ project.project_id }}/share/generate`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -9178,7 +9180,7 @@
 
         async function disableSharing() {
             try {
-                const response = await fetch(`/api/projects/{{ project.project_id }}/share/disable`, {
+                const response = await fetch(`/landppt/api/projects/{{ project.project_id }}/share/disable`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -10533,18 +10535,18 @@
             if (!image) return '';
 
             // 如果已经是完整URL，直接返回
-            if (image.url && (image.url.startsWith('http') || image.url.startsWith('/api/'))) {
+            if (image.url && (image.url.startsWith('http') || image.url.startsWith('/landppt/api/'))) {
                 return image.url;
             }
 
             // 如果有image.id，构建API URL
             if (image.id) {
-                return `/api/image/view/${image.id}`;
+                return `/landppt/api/image/view/${image.id}`;
             }
 
             // 如果有相对路径，转换为API URL
             if (image.url) {
-                return image.url.startsWith('/') ? image.url : `/api/image/view/${image.url}`;
+                return image.url.startsWith('/') ? image.url : `/landppt/api/image/view/${image.url}`;
             }
 
             // 默认占位图
@@ -10561,8 +10563,8 @@
             const originalSrc = imgElement.src;
 
             // 如果不是API URL，尝试API URL
-            if (!originalSrc.includes('/api/image/view/')) {
-                const apiUrl = `/api/image/view/${imageId}`;
+            if (!originalSrc.includes('/landppt/api/image/view/')) {
+                const apiUrl = `/landppt/api/image/view/${imageId}`;
                 if (originalSrc !== apiUrl) {
                     imgElement.src = apiUrl;
                     return;
@@ -10591,7 +10593,7 @@
                         <i class="fas fa-images fa-4x mb-3" style="opacity: 0.3;"></i>
                         <h5>图片库中暂无图片</h5>
                         <p>您可以先上传一些图片到图片库</p>
-                        <a href="/image-gallery" class="btn btn-outline-primary" target="_blank">
+                        <a href="/landppt/image-gallery" class="btn btn-outline-primary" target="_blank">
                             <i class="fas fa-upload"></i> 前往图片库上传
                         </a>
                     </div>
@@ -11222,7 +11224,7 @@
             formData.append('tags', 'ai_assistant,ppt_edit');
 
             try {
-                const response = await fetch('/api/image/upload', {
+                const response = await fetch('/landppt/api/image/upload', {
                     method: 'POST',
                     body: formData
                 });
@@ -11258,17 +11260,17 @@
 
         async function getImageAbsoluteUrl(imageId) {
             try {
-                const response = await fetch(`/api/image/${imageId}/info`);
+                const response = await fetch(`/landppt/api/image/${imageId}/info`);
                 const result = await response.json();
 
                 if (result.success && result.image_info) {
                     return result.image_info.absolute_url;
                 } else {
                     // 如果获取失败，使用默认的URL格式
-                    return `${window.location.origin}/api/image/${imageId}`;
+                    return `${window.location.origin}/landppt/api/image/${imageId}`;
                 }
             } catch (error) {
-                return `${window.location.origin}/api/image/${imageId}`;
+                return `${window.location.origin}/landppt/api/image/${imageId}`;
             }
         }
 
@@ -11680,7 +11682,7 @@
                     sort: 'created_desc'
                 });
 
-                const response = await fetch(`/api/image/gallery/list?${params}`);
+                const response = await fetch(`/landppt/api/image/gallery/list?${params}`);
                 const result = await response.json();
 
                 const loading = document.getElementById('imageLibraryLoading');
@@ -11730,7 +11732,7 @@
                 item.dataset.imageId = image.image_id;
 
                 // 构建图片URL
-                const imageUrl = `/api/image/view/${image.image_id}`;
+                const imageUrl = `/landppt/api/image/view/${image.image_id}`;
 
                 // 格式化文件大小 - 检查多个可能的位置
                 let fileSize = '未知大小';
@@ -11821,7 +11823,7 @@
                         id: image.image_id,
                         name: image.title || '未命名图片',
                         size: image.file_size || (image.metadata && image.metadata.file_size) || 0,
-                        url: `${window.location.origin}/api/image/view/${image.image_id}`,
+                        url: `${window.location.origin}/landppt/api/image/view/${image.image_id}`,
                         file: null
                     };
 
@@ -11846,7 +11848,7 @@
         // 获取图片的完整信息，包括绝对URL
         async function getImageCompleteInfo(imageId) {
             try {
-                const response = await fetch(`/api/image/${imageId}/info`);
+                const response = await fetch(`/landppt/api/image/${imageId}/info`);
                 const result = await response.json();
 
                 if (result.success && result.image_info) {
@@ -11861,7 +11863,7 @@
             } catch (error) {
                 // 如果专用接口失败，尝试使用详情接口
                 try {
-                    const detailResponse = await fetch(`/api/image/detail/${imageId}`);
+                    const detailResponse = await fetch(`/landppt/api/image/detail/${imageId}`);
                     const detailResult = await detailResponse.json();
 
                     if (detailResult.success && detailResult.image) {
@@ -11869,7 +11871,7 @@
                         return {
                             name: image.title || image.filename,
                             size: (image.metadata && image.metadata.file_size) ? image.metadata.file_size : 0,
-                            absoluteUrl: `${window.location.origin}/api/image/view/${imageId}`
+                            absoluteUrl: `${window.location.origin}/landppt/api/image/view/${imageId}`
                         };
                     }
                 } catch (detailError) {
@@ -12034,7 +12036,7 @@
                 };
 
                 // 发送AI增强请求
-                const response = await fetch('/api/ai/enhance-all-bullet-points', {
+                const response = await fetch('/landppt/api/ai/enhance-all-bullet-points', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -12816,7 +12818,7 @@
                 checkCount++;
 
                 try {
-                    const response = await fetch(`/api/projects/{{ project.project_id }}/speech-scripts/progress/${taskId}`);
+                    const response = await fetch(`/landppt/api/projects/{{ project.project_id }}/speech-scripts/progress/${taskId}`);
                     const result = await response.json();
 
                     console.log(`Progress check ${checkCount}:`, result);
@@ -12880,7 +12882,7 @@
                 checkCount++;
 
                 try {
-                    const response = await fetch(`/api/projects/{{ project.project_id }}/speech-scripts/progress/${taskId}`);
+                    const response = await fetch(`/landppt/api/projects/{{ project.project_id }}/speech-scripts/progress/${taskId}`);
                     const result = await response.json();
 
                     console.log(`Single script progress check ${checkCount}:`, result);
@@ -13021,7 +13023,7 @@
                 updateProgressToast(progressToast, progressMessage, 0);
 
                 // Make API request
-                const response = await fetch(`/api/projects/{{ project.project_id }}/speech-script/generate`, {
+                const response = await fetch(`/landppt/api/projects/{{ project.project_id }}/speech-script/generate`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -13230,7 +13232,7 @@
             }
 
             try {
-                const response = await fetch(`/api/projects/{{ project.project_id }}/speech-script/export`, {
+                const response = await fetch(`/landppt/api/projects/{{ project.project_id }}/speech-script/export`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -13333,7 +13335,7 @@
                 saveBtn.disabled = true;
 
                 // 调用API保存
-                const response = await fetch(`/api/projects/{{ project.project_id }}/speech-scripts/slide/${slideIndex}`, {
+                const response = await fetch(`/landppt/api/projects/{{ project.project_id }}/speech-scripts/slide/${slideIndex}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'
@@ -13391,7 +13393,7 @@
                 };
 
                 // 调用生成API
-                const response = await fetch(`/api/projects/{{ project.project_id }}/speech-script/generate`, {
+                const response = await fetch(`/landppt/api/projects/{{ project.project_id }}/speech-script/generate`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -13521,7 +13523,7 @@
                 console.log(`Polling attempt ${attempts}/${maxAttempts}...`);
 
                 try {
-                    const response = await fetch(`/api/projects/{{ project.project_id }}/speech-scripts`);
+                    const response = await fetch(`/landppt/api/projects/{{ project.project_id }}/speech-scripts`);
                     const result = await response.json();
 
                     if (result.success && result.scripts && result.scripts.length > 0) {
@@ -13560,7 +13562,7 @@
 
                 console.log('Fetching speech scripts from API...');
                 // Fetch current speech scripts
-                const response = await fetch(`/api/projects/{{ project.project_id }}/speech-scripts`);
+                const response = await fetch(`/landppt/api/projects/{{ project.project_id }}/speech-scripts`);
                 const result = await response.json();
 
                 console.log('API response:', result);
@@ -13664,7 +13666,7 @@
             }
 
             try {
-                const response = await fetch(`/api/projects/{{ project.project_id }}/speech-scripts/slide/${slideIndex}`, {
+                const response = await fetch(`/landppt/api/projects/{{ project.project_id }}/speech-scripts/slide/${slideIndex}`, {
                     method: 'DELETE'
                 });
 
@@ -14164,7 +14166,7 @@
                 const outlineContent = JSON.stringify(projectOutline);
 
                 // 调用AI优化接口
-                const response = await fetch('/api/ai/optimize-outline', {
+                const response = await fetch('/landppt/api/ai/optimize-outline', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

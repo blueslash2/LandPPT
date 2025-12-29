@@ -455,10 +455,10 @@
 
 <div class="quick-actions">
     <div class="action-buttons">
-        <a href="/scenarios" class="action-button primary">
+        <a href="/landppt/scenarios" class="action-button primary">
             创建新项目
         </a>
-        <a href="/projects" class="action-button secondary">
+        <a href="/landppt/projects" class="action-button secondary">
             查看所有项目
         </a>
     </div>
@@ -500,16 +500,16 @@
                 </div>
 
                 <div class="project-actions">
-                    <a href="/projects/{{ project.project_id }}" class="project-action-btn primary">
+                    <a href="/landppt/projects/{{ project.project_id }}" class="project-action-btn primary">
                         <i class="fas fa-eye"></i>
                         查看详情
                     </a>
                     {% if project.status == 'completed' %}
-                    <a href="/projects/{{ project.project_id }}/edit" class="project-action-btn secondary">
+                    <a href="/landppt/projects/{{ project.project_id }}/edit" class="project-action-btn secondary">
                         <i class="fas fa-pen"></i>
                         编辑 PPT
                     </a>
-                    <a href="/projects/{{ project.project_id }}/fullscreen" class="project-action-btn secondary" target="_blank">
+                    <a href="/landppt/projects/{{ project.project_id }}/fullscreen" class="project-action-btn secondary" target="_blank">
                         <i class="fas fa-expand"></i>
                         打开预览
                     </a>
@@ -529,7 +529,7 @@
     <div class="empty-state">
         <h3>暂无项目</h3>
         <p>开始创建您的第一个 PPT 项目</p>
-        <a href="/scenarios" class="btn btn-primary">创建项目</a>
+        <a href="/landppt/scenarios" class="btn btn-primary">创建项目</a>
     </div>
     {% endif %}
 </div>
@@ -558,7 +558,7 @@
             </div>
 
             <div style="text-align: center;">
-                <a href="/projects/{{ todo_board.task_id }}/todo" class="btn btn-primary">
+                <a href="/landppt/projects/{{ todo_board.task_id }}/todo" class="btn btn-primary">
                     查看看板
                 </a>
             </div>
@@ -652,7 +652,7 @@ async function executeDeleteProject() {
     }
 
     try {
-        const response = await fetch(`/api/database/projects/${currentDeleteProjectId}`, {
+        const response = await fetch(`/landppt/api/database/projects/${currentDeleteProjectId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'

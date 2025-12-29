@@ -830,12 +830,22 @@
     let currentTag = '';
     let allTags = [];
 
-    // Extract project ID from URL path: /projects/{project_id}/template-selection
+    // Extract project ID from URL path: /landppt/projects/{project_id}/template-selection
     let pathParts = window.location.pathname.split('/');
-    let projectId = pathParts[2]; // Should be the project ID (pathParts: ['', 'projects', 'project_id', 'template-selection'])
+    let projectId = null;
 
     console.log('URL pathname:', window.location.pathname);
     console.log('Path parts:', pathParts);
+
+    // Find the project ID in the path
+    // Expected path: /landppt/projects/{project_id}/template-selection
+    for (let i = 0; i < pathParts.length; i++) {
+        if (pathParts[i] === 'projects' && i + 1 < pathParts.length) {
+            projectId = pathParts[i + 1];
+            break;
+        }
+    }
+
     console.log('Extracted project ID:', projectId);
 
     // Initialize page
@@ -846,14 +856,14 @@
 
         // Validate project ID format
         if (!projectId || projectId === 'undefined' || projectId === 'projects') {
-            alert('错误：无法获取项目ID。当前路径：' + window.location.pathname + '\n\n请确保URL格式正确：/projects/{项目ID}/template-selection');
+            alert('错误：无法获取项目ID。当前路径：' + window.location.pathname + '\n\n请确保URL格式正确：/landppt/projects/{项目ID}/template-selection');
             return;
         }
 
         // Additional validation for common invalid project IDs
         if (['template-selection', 'todo', 'edit', 'preview', 'fullscreen'].includes(projectId)) {
             alert('错误：项目ID格式无效 (' + projectId + ')。\n\n请从项目列表页面正确访问模板选择页面。');
-            window.location.href = '/projects';
+            window.location.href = '/landppt/projects';
             return;
         }
 
@@ -944,7 +954,7 @@
                 params.append('tags', currentTag);
             }
 
-            const response = await fetch(`/api/global-master-templates/?${params}`);
+            const response = await fetch(`/landppt/api/global-master-templates/?${params}`);
 
             if (!response.ok) {
                 throw new Error('Failed to load templates');
@@ -1199,7 +1209,7 @@
 
     async function previewTemplate(templateId) {
         try {
-            const response = await fetch(`/api/global-master-templates/${templateId}/preview`);
+            const response = await fetch(`/landppt/api/global-master-templates/${templateId}/preview`);
             if (!response.ok) {
                 throw new Error('Failed to load template preview');
             }
@@ -1264,7 +1274,7 @@
             console.log('Sending request to select template...');
 
             // Select template for project
-            const response = await fetch(`/api/projects/${projectId}/select-template`, {
+            const response = await fetch(`/landppt/api/projects/${projectId}/select-template`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -1296,7 +1306,7 @@
 
             // Redirect to TODO board to start PPT generation
             console.log('Redirecting to TODO board...');
-            window.location.href = `/projects/${projectId}/todo`;
+            window.location.href = `/landppt/projects/${projectId}/todo`;
 
         } catch (error) {
             console.error('Error starting PPT generation:', error);
@@ -1317,7 +1327,7 @@
             console.log('Sending request to use default template...');
 
             // Use default template (null template_id)
-            const response = await fetch(`/api/projects/${projectId}/select-template`, {
+            const response = await fetch(`/landppt/api/projects/${projectId}/select-template`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -1349,7 +1359,7 @@
 
             // Redirect to TODO board to start PPT generation
             console.log('Redirecting to TODO board...');
-            window.location.href = `/projects/${projectId}/todo`;
+            window.location.href = `/landppt/projects/${projectId}/todo`;
 
         } catch (error) {
             console.error('Error using default template:', error);
@@ -1365,7 +1375,7 @@
     async function loadTemplatePreview(templateId) {
         try {
             console.log('Loading preview for template', templateId);
-            const response = await fetch('/api/global-master-templates/' + templateId);
+            const response = await fetch('/landppt/api/global-master-templates/' + templateId);
             if (!response.ok) {
                 console.warn('Failed to load template', templateId, 'for preview');
                 showPreviewFallback(templateId);
@@ -1399,6 +1409,7 @@
     <style>
         body { width: 1280px; height: 720px; margin: 0; padding: 0; overflow: hidden; }
     </style>
+
 </head>
 <body>
     ${previewHtml}
@@ -1763,7 +1774,7 @@
                     page_size: maxPageSize.toString()
                 });
 
-                const response = await fetch(`/api/global-master-templates/?${params}`);
+                const response = await fetch(`/landppt/api/global-master-templates/?${params}`);
 
                 if (!response.ok) {
                     throw new Error('Failed to load tags');

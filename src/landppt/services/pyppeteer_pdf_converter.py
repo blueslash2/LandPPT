@@ -2188,6 +2188,9 @@ class PlaywrightPDFConverter:
                     if stable_count < stability_checks:
                         await asyncio.sleep(stability_interval)
 
+            # 在所有等待逻辑完成后、截图之前添加2秒延时
+            await asyncio.sleep(3)
+
             # Take screenshot
             await page.screenshot(
                 path=screenshot_path,

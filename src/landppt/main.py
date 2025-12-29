@@ -34,13 +34,14 @@ logging.getLogger('sqlalchemy.engine.Engine').setLevel(logging.WARNING)
 logging.getLogger('sqlalchemy.pool').setLevel(logging.WARNING)
 logging.getLogger('sqlalchemy.dialects').setLevel(logging.WARNING)
 
-# Create FastAPI app
+# Create FastAPI app with hardcoded root_path for /landppt prefix
 app = FastAPI(
     title="LandPPT API",
     description="AI-powered PPT generation platform with OpenAI-compatible API",
     version="0.1.0",
     docs_url="/docs",
-    redoc_url="/redoc"
+    redoc_url="/redoc",
+    root_path="/landppt"  # Hardcoded /landppt prefix
 )
 
 
@@ -119,7 +120,7 @@ else:
 async def root():
     """Root endpoint - redirect to dashboard"""
     from fastapi.responses import RedirectResponse
-    return RedirectResponse(url="/dashboard", status_code=302)
+    return RedirectResponse(url="/landppt/dashboard", status_code=302)
 
 @app.get("/favicon.ico")
 async def favicon():

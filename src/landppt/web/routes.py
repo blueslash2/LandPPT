@@ -241,7 +241,7 @@ async def web_home(
         if projects_response.total > 0:
             # User has projects, redirect to dashboard
             from fastapi.responses import RedirectResponse
-            return RedirectResponse(url="/dashboard", status_code=302)
+            return RedirectResponse(url="/landppt/dashboard", status_code=302)
     except:
         pass  # If error, show index page
 
@@ -933,7 +933,7 @@ async def generate_share_link(
             raise HTTPException(status_code=500, detail="生成分享链接失败")
 
         # Construct full share URL
-        share_url = f"/share/{share_token}"
+        share_url = f"/landppt/share/{share_token}"
 
         return {
             "success": True,
@@ -1092,7 +1092,7 @@ async def web_create_project(
         # Redirect directly to TODO page without showing redirect page
         from fastapi.responses import RedirectResponse
         return RedirectResponse(
-            url=f"/projects/{project.project_id}/todo",
+            url=f"/landppt/projects/{project.project_id}/todo",
             status_code=302
         )
 
@@ -1785,7 +1785,7 @@ async def confirm_project_requirements(
         return JSONResponse({
             "status": "success",
             "message": "需求确认完成",
-            "redirect_url": f"/projects/{project_id}/todo"
+            "redirect_url": f"/landppt/projects/{project_id}/todo"
         })
 
     except Exception as e:
@@ -4945,7 +4945,7 @@ async def export_project_pptx(project_id: str):
             "status": "processing",
             "task_id": task_id,
             "message": "PPTX conversion started in background",
-            "polling_endpoint": f"/api/landppt/tasks/{task_id}"
+            "polling_endpoint": f"/landppt/api/landppt/tasks/{task_id}"
         })
 
     except HTTPException:
@@ -5111,7 +5111,7 @@ async def export_project_pptx_from_images(project_id: str, request: ImagePPTXExp
             "status": "processing",
             "task_id": task_id,
             "message": "PPTX generation with screenshots started in background",
-            "polling_endpoint": f"/api/landppt/tasks/{task_id}"
+            "polling_endpoint": f"/landppt/api/landppt/tasks/{task_id}"
         })
 
     except HTTPException:
@@ -5150,7 +5150,7 @@ async def get_task_status(task_id: str):
         response["result"] = task.result
         # 如果是PDF转PPTX任务，提供下载链接
         if task.task_type == "pdf_to_pptx_conversion" and task.result.get("success"):
-            response["download_url"] = f"/api/landppt/tasks/{task_id}/download"
+            response["download_url"] = f"/landppt/api/landppt/tasks/{task_id}/download"
 
     # 如果任务失败，添加错误信息
     if task.status.value == "failed":

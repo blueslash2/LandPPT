@@ -30,7 +30,7 @@ async def login_page(
     # Check if user is already logged in using request.state.user set by middleware
     user = get_current_user(request)
     if user:
-        return RedirectResponse(url="/dashboard", status_code=302)
+        return RedirectResponse(url="/landppt/dashboard", status_code=302)
 
     return templates.TemplateResponse("login.html", {
         "request": request,
@@ -64,7 +64,7 @@ async def login(
         session_id = auth_service.create_session(db, user)
         
         # Redirect to dashboard
-        response = RedirectResponse(url="/dashboard", status_code=302)
+        response = RedirectResponse(url="/landppt/dashboard", status_code=302)
 
         # Set cookie max_age based on session expiration
         # If session_expire_minutes is 0, set cookie to never expire (None means session cookie)
@@ -104,7 +104,7 @@ async def logout(
     if session_id:
         auth_service.logout_user(db, session_id)
     
-    response = RedirectResponse(url="/auth/login?success=已成功退出登录", status_code=302)
+    response = RedirectResponse(url="/landppt/auth/login?success=已成功退出登录", status_code=302)
     response.delete_cookie("session_id")
     
     return response

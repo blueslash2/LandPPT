@@ -1,5 +1,10 @@
 // Global Master Templates Management JavaScript
 
+// Hardcoded base path for /landppt prefix
+function getBasePath() {
+    return '/landppt';
+}
+
 async function updateTagFilter() {
     const tagFilter = document.getElementById('tagFilter');
 
@@ -10,7 +15,7 @@ async function updateTagFilter() {
 
     try {
         // Get all templates to extract tags (without pagination)
-        const response = await fetch('/api/global-master-templates/?active_only=true&page_size=1000');
+        const response = await fetch('/landppt/api/global-master-templates/?active_only=true&page_size=1000');
         if (response.ok) {
             const data = await response.json();
             const allTemplates = data.templates || [];
@@ -109,7 +114,7 @@ function closePreviewModal() {
 
 async function loadTemplateForEdit(templateId) {
     try {
-        const response = await fetch(`/api/global-master-templates/${templateId}`);
+        const response = await fetch(`/landppt/api/global-master-templates/${templateId}`);
         if (!response.ok) {
             throw new Error('Failed to load template');
         }
@@ -143,7 +148,7 @@ async function handleTemplateSubmit(event) {
         let response;
         if (editingTemplateId) {
             // Update existing template
-            response = await fetch(`/api/global-master-templates/${editingTemplateId}`, {
+            response = await fetch(`/landppt/api/global-master-templates/${editingTemplateId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -152,7 +157,7 @@ async function handleTemplateSubmit(event) {
             });
         } else {
             // Create new template
-            response = await fetch('/api/global-master-templates/', {
+            response = await fetch('/landppt/api/global-master-templates/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -245,7 +250,7 @@ async function startGeneration(requestData) {
         // 更新状态
         updateGenerationStatus('正在连接AI服务...');
 
-        const response = await fetch('/api/global-master-templates/generate', {
+        const response = await fetch('/landppt/api/global-master-templates/generate', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -326,7 +331,7 @@ async function saveGeneratedTemplate() {
     }
 
     try {
-        const response = await fetch('/api/global-master-templates/save-generated', {
+        const response = await fetch('/landppt/api/global-master-templates/save-generated', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -382,7 +387,7 @@ async function adjustTemplate() {
             template_name: window.generatedTemplateData.template_name
         };
 
-        const response = await fetch('/api/global-master-templates/adjust-template', {
+        const response = await fetch('/landppt/api/global-master-templates/adjust-template', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -481,7 +486,7 @@ async function handleGenerationComplete(data) {
 
         // 尝试获取模板的HTML内容来显示预览
         try {
-            const response = await fetch(`/api/global-master-templates/${data.id}`);
+            const response = await fetch(`/landppt/api/global-master-templates/${data.id}`);
             if (response.ok) {
                 const templateData = await response.json();
                 console.log('Fetched template data:', templateData);
@@ -665,7 +670,7 @@ async function handleTemplateImport(event) {
         }
 
         // 创建模板
-        const response = await fetch('/api/global-master-templates/', {
+        const response = await fetch('/landppt/api/global-master-templates/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

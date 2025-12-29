@@ -1071,26 +1071,26 @@
 <div style="text-align: center; margin-bottom: 40px;">
     <div
         style="display: inline-flex; gap: 12px; flex-wrap: wrap; justify-content: center; background: var(--surface); padding: 20px; border-radius: 16px; box-shadow: var(--shadow-soft);">
-        <a href="/projects/{{ todo_board.task_id }}"
+        <a href="/landppt/projects/{{ todo_board.task_id }}"
             style="background: var(--surface-contrast); color: var(--surface); text-decoration: none; padding: 10px 20px; border-radius: 10px; font-weight: 600; transition: all 0.3s ease; display: flex; align-items: center; gap: 6px; font-size: 0.9em;"
             onmouseover="this.style.transform='translateY(-2px)';" onmouseout="this.style.transform='translateY(0)';">
             查看项目详情
         </a>
 
         {% if todo_board.overall_progress >= 100 %}
-        <a href="/projects/{{ todo_board.task_id }}/preview" target="_blank"
+        <a href="/landppt/projects/{{ todo_board.task_id }}/preview" target="_blank"
             style="background: #1f2a37; color: var(--surface); text-decoration: none; padding: 10px 20px; border-radius: 10px; font-weight: 600; transition: all 0.3s ease; display: flex; align-items: center; gap: 6px; font-size: 0.9em;"
             onmouseover="this.style.transform='translateY(-2px)';" onmouseout="this.style.transform='translateY(0)';">
             预览 PPT
         </a>
-        <a href="/projects/{{ todo_board.task_id }}/edit" target="_blank"
+        <a href="/landppt/projects/{{ todo_board.task_id }}/edit" target="_blank"
             style="background: #3f3f3f; color: var(--surface); text-decoration: none; padding: 10px 20px; border-radius: 10px; font-weight: 600; transition: all 0.3s ease; display: flex; align-items: center; gap: 6px; font-size: 0.9em;"
             onmouseover="this.style.transform='translateY(-2px)';" onmouseout="this.style.transform='translateY(0)';">
             编辑 PPT
         </a>
         {% endif %}
 
-        <a href="/projects"
+        <a href="/landppt/projects"
             style="background: #2d2d2d; color: var(--surface); text-decoration: none; padding: 10px 20px; border-radius: 10px; font-weight: 600; transition: all 0.3s ease; display: flex; align-items: center; gap: 6px; font-size: 0.9em;"
             onmouseover="this.style.transform='translateY(-2px)';" onmouseout="this.style.transform='translateY(0)';">
             返回项目列表
@@ -1794,7 +1794,7 @@
 
 
                 try {
-                    const response = await fetch(`/projects/${currentProjectId}/confirm-requirements`, {
+                    const response = await fetch(`/landppt/projects/${currentProjectId}/confirm-requirements`, {
                         method: 'POST',
                         body: formData
                     });
@@ -2305,7 +2305,7 @@
 
         try {
             // 调用非流式大纲生成接口
-            const response = await fetch(`/projects/${currentProjectId}/generate-outline`, {
+            const response = await fetch(`/landppt/projects/${currentProjectId}/generate-outline`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -2582,7 +2582,7 @@
 
         try {
             // 调用文件大纲生成接口（非流式）
-            const response = await fetch(`/projects/${currentProjectId}/generate-file-outline`, {
+            const response = await fetch(`/landppt/projects/${currentProjectId}/generate-file-outline`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -2884,7 +2884,7 @@
         // 调用专门的重新生成大纲接口，带上自定义需求
         try {
             console.log('Calling regenerate outline API with custom requirements:', customRequirements);
-            const response = await fetch(`/projects/${currentProjectId}/regenerate-outline`, {
+            const response = await fetch(`/landppt/projects/${currentProjectId}/regenerate-outline`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -3106,7 +3106,7 @@
         }
 
         try {
-            const response = await fetch(`/projects/${currentProjectId}/update-outline`, {
+            const response = await fetch(`/landppt/projects/${currentProjectId}/update-outline`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -3169,7 +3169,7 @@
     function confirmOutlineNew() {
         if (confirm('确认大纲内容？')) {
             // Mark outline as confirmed
-            fetch(`/projects/${currentProjectId}/confirm-outline`, {
+            fetch(`/landppt/projects/${currentProjectId}/confirm-outline`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -3238,7 +3238,7 @@
 
         if (confirm('确认开始生成PPT？这将跳转到模板选择页面。')) {
             // Redirect to template selection page
-            window.location.href = `/projects/${currentProjectId}/template-selection`;
+            window.location.href = `/landppt/projects/${currentProjectId}/template-selection`;
         }
     }
 
@@ -3289,7 +3289,7 @@
         }
 
         try {
-            const response = await fetch(`/projects/${currentProjectId}/outline-stream`);
+            const response = await fetch(`/landppt/projects/${currentProjectId}/outline-stream`);
             const reader = response.body.getReader();
             const decoder = new TextDecoder();
 
@@ -3474,7 +3474,7 @@
         }
 
         try {
-            const response = await fetch(`/projects/${currentProjectId}/stage-stream/${stageId}`);
+            const response = await fetch(`/landppt/projects/${currentProjectId}/stage-stream/${stageId}`);
             const reader = response.body.getReader();
             const decoder = new TextDecoder();
 
@@ -3600,7 +3600,7 @@
 
         try {
             // Call backend API to reset stages from the selected stage
-            const response = await fetch(`/api/projects/${currentProjectId}/continue-from-stage`, {
+            const response = await fetch(`/landppt/api/projects/${currentProjectId}/continue-from-stage`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -3646,7 +3646,7 @@
 
     async function updateStageStatus(stageId, status, progress = null) {
         try {
-            const response = await fetch(`/api/projects/${currentProjectId}/stages/${stageId}`, {
+            const response = await fetch(`/landppt/api/projects/${currentProjectId}/stages/${stageId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -3674,7 +3674,7 @@
     // Silent version that doesn't reload the page (for regeneration scenarios)
     async function updateStageStatusSilent(stageId, status, progress = null) {
         try {
-            const response = await fetch(`/api/projects/${currentProjectId}/stages/${stageId}`, {
+            const response = await fetch(`/landppt/api/projects/${currentProjectId}/stages/${stageId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -3698,7 +3698,7 @@
     // Real-time updates
     setInterval(async function () {
         try {
-            const response = await fetch(`/api/projects/${currentProjectId}/todo`);
+            const response = await fetch(`/landppt/api/projects/${currentProjectId}/todo`);
             const todoData = await response.json();
 
             // Update overall progress
@@ -3839,7 +3839,7 @@
             if (allPending) {
                 // Start the workflow automatically for requirements confirmation
                 setTimeout(() => {
-                    fetch(`/projects/${currentProjectId}/start-workflow`, {
+                    fetch(`/landppt/projects/${currentProjectId}/start-workflow`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -3892,7 +3892,7 @@
             }
 
             // Start streaming
-            fetch(`/projects/${currentProjectId}/stage-stream/${stageId}`)
+            fetch(`/landppt/projects/${currentProjectId}/stage-stream/${stageId}`)
                 .then(response => response.body.getReader())
                 .then(reader => {
                     const decoder = new TextDecoder();
@@ -4382,7 +4382,7 @@
             }
 
             // 保存到服务器
-            fetch(`/projects/${currentProjectId}/update-outline`, {
+            fetch(`/landppt/projects/${currentProjectId}/update-outline`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -4496,7 +4496,7 @@
     // 保存大纲到服务器
     async function saveOutlineToServer(jsonString) {
         try {
-            const response = await fetch(`/projects/${currentProjectId}/update-outline`, {
+            const response = await fetch(`/landppt/projects/${currentProjectId}/update-outline`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -4611,7 +4611,7 @@
         const actionsDiv = document.getElementById('outline-actions');
 
         if (!jsonViewBtn || !outlineViewBtn || !jsonView || !outlineView) {
-            console.error('View elements not found');
+            console.log('View elements not found, will retry later');
             return;
         }
 
@@ -5140,7 +5140,7 @@
         try {
             const newOutline = JSON.parse(editor.value);
 
-            const response = await fetch(`/projects/${currentProjectId}/update-outline`, {
+            const response = await fetch(`/landppt/projects/${currentProjectId}/update-outline`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -5508,7 +5508,7 @@
             parsedOutline.slides[slideIndex] = updatedSlide;
 
             // 保存到服务器
-            const response = await fetch(`/projects/${currentProjectId}/update-outline`, {
+            const response = await fetch(`/landppt/projects/${currentProjectId}/update-outline`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -6275,7 +6275,7 @@
             const parsedOutline = JSON.parse(outlineContent);
 
             // 调用AI优化接口
-            const response = await fetch('/api/ai/optimize-outline', {
+            const response = await fetch('/landppt/api/ai/optimize-outline', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -6429,7 +6429,7 @@
 
         try {
             // 调用AI优化接口
-            const response = await fetch('/api/ai/optimize-outline', {
+            const response = await fetch('/landppt/api/ai/optimize-outline', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -6532,7 +6532,7 @@
             document.body.appendChild(loadingToast);
 
             // 调用AI优化接口
-            const response = await fetch('/api/ai/optimize-outline', {
+            const response = await fetch('/landppt/api/ai/optimize-outline', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -6561,7 +6561,7 @@
                 parsedOutline.slides[slideIndex] = optimizedSlide;
 
                 // 保存到服务器
-                const saveResponse = await fetch(`/projects/${currentProjectId}/update-outline`, {
+                const saveResponse = await fetch(`/landppt/projects/${currentProjectId}/update-outline`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -6662,7 +6662,7 @@
 
         try {
             // 调用AI优化接口
-            const response = await fetch('/api/ai/optimize-outline', {
+            const response = await fetch('/landppt/api/ai/optimize-outline', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

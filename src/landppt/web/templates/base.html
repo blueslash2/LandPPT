@@ -4,9 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="app-base-path" content="/landppt">
     <title>{% block title %}LandPPT - AI PPT Generator{% endblock %}</title>
-    <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
-    <link rel="alternate icon" href="/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="/landppt/static/images/favicon.ico">
+    <link rel="alternate icon" href="/landppt/favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         @import url('https://fonts.loli.net/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
@@ -439,6 +440,7 @@
         }
     </style>
     {% block extra_css %}{% endblock %}
+
 </head>
 
 <body>
@@ -446,28 +448,28 @@
         <header class="header">
             <h1>
                 <span style="display: inline-flex; align-items: center; gap: 12px;">
-                    <img src="/static/images/landppt-logo.png" alt="LandPPT Logo" style="width: 60px; height: 60px;">
+                    <img src="/landppt/static/images/landppt-logo.png" alt="LandPPT Logo" style="width: 60px; height: 60px;">
                     LandPPT
                 </span>
             </h1>
             <p>AI-powered presentation generation platform</p>
             <nav class="nav">
                 <div class="nav-main">
-                    <a href="/home"><i class="fas fa-home"></i> 首页</a>
-                    <a href="/scenarios"><i class="fas fa-list-alt"></i> 场景选择</a>
-                    <a href="/projects"><i class="fas fa-chart-bar"></i> 项目列表</a>
-                    <a href="/dashboard"><i class="fas fa-tachometer-alt"></i> 项目仪表板</a>
-                    <a href="/global-master-templates"><i class="fas fa-palette"></i> 模板管理</a>
-                    <a href="/image-gallery"><i class="fas fa-images"></i> 本地图床</a>
-                    <a href="/ai-config"><i class="fas fa-robot"></i> 系统配置</a>
-                    <!-- <a href="/docs"><i class="fas fa-book"></i> API文档</a> -->
+                    <a href="/landppt/home"><i class="fas fa-home"></i> 首页</a>
+                    <a href="/landppt/scenarios"><i class="fas fa-list-alt"></i> 场景选择</a>
+                    <a href="/landppt/projects"><i class="fas fa-chart-bar"></i> 项目列表</a>
+                    <a href="/landppt/dashboard"><i class="fas fa-tachometer-alt"></i> 项目仪表板</a>
+                    <a href="/landppt/global-master-templates"><i class="fas fa-palette"></i> 模板管理</a>
+                    <a href="/landppt/image-gallery"><i class="fas fa-images"></i> 本地图床</a>
+                    <a href="/landppt/ai-config"><i class="fas fa-robot"></i> 系统配置</a>
+                    <!-- <a href="/landppt/docs"><i class="fas fa-book"></i> API文档</a> -->
                 </div>
 
                 <div class="nav-user">
-                    <a href="/auth/profile" title="个人资料">
+                    <a href="/landppt/auth/profile" title="个人资料">
                         <i class="fas fa-user"></i> 个人资料
                     </a>
-                    <a href="/auth/logout" title="退出登录" onclick="return confirm('确定要退出登录吗？')">
+                    <a href="/landppt/auth/logout" title="退出登录" onclick="return confirm('确定要退出登录吗？')">
                         <i class="fas fa-sign-out-alt"></i> 退出
                     </a>
                 </div>
