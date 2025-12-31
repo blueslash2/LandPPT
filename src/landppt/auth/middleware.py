@@ -25,6 +25,7 @@ class AuthMiddleware:
             "/",
             "/landppt/auth/login",
             "/landppt/auth/logout",
+            "/landppt/api/auth/register",  # 注册API应该无需认证
             "/landppt/api/auth/login",
             "/landppt/api/auth/logout",
             "/landppt/api/auth/check",

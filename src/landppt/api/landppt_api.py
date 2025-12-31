@@ -2,12 +2,14 @@
 LandPPT specific API endpoints
 """
 
-from fastapi import APIRouter, HTTPException, UploadFile, File, Form, Request
+from fastapi import APIRouter, HTTPException, UploadFile, File, Form, Request, Depends
 from typing import List, Optional
+from ..auth.auth_service import get_current_user, User
 import uuid
 import json
 import logging
 import re
+from ..auth.auth_service import get_current_user, User
 
 from .models import (
     PPTScenario, PPTGenerationRequest, PPTGenerationResponse,
@@ -375,20 +377,20 @@ async def generate_outline(request: PPTGenerationRequest):
 # New Project Management Endpoints
 
 @router.post("/projects", response_model=PPTProject)
-async def create_project(request: PPTGenerationRequest):
+async def create_project(request: PPTGenerationRequest, current_user: User = Depends(get_current_user)):
     """Create a new PPT project with TODO workflow"""
     try:
-        project = await ppt_service.create_project_with_workflow(request)
+        project = await ppt_service.create_project_with_workflow(request, username=current_user.username)
         return project
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error creating project: {str(e)}")
 
 @router.get("/projects", response_model=ProjectListResponse)
-async def list_projects(page: int = 1, page_size: int = 10, status: Optional[str] = None):
+async def list_projects(page: int = 1, page_size: int = 10, status: Optional[str] = None, current_user: User = Depends(get_current_user)):
     """List projects with pagination"""
     try:
-        return await ppt_service.project_manager.list_projects(page, page_size, status)
+        return await ppt_service.project_manager.list_projects(page, page_size, status, username=current_user.username)
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error listing projects: {str(e)}")

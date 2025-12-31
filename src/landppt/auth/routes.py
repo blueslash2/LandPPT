@@ -180,27 +180,180 @@ async def change_password(
         })
 
 
+@router.post("/api/auth/register")
+async def api_register(
+    username: str = Form(...),
+    password: str = Form(...),
+    email: str = Form(None),
+    db: Session = Depends(get_db),
+    auth_service: AuthService = Depends(get_auth_service)
+):
+    """API用户注册端点 - 注册成功返回302，失败返回200"""
+    logger.info(f"收到注册请求 - 用户名: {username}, 邮箱: {email}")
+    
+    try:
+        # 检查数据库连接状态
+        if not db:
+            logger.error("数据库会话无效")
+            return {
+                "success": False,
+                "message": "数据库连接失败",
+                "user": None
+            }
+        
+        # 记录注册前的数据库状态
+        user_count_before = db.query(User).count()
+        logger.info(f"注册前用户总数: {user_count_before}")
+        
+        # 检查用户名是否已存在
+        existing_user = db.query(User).filter(User.username == username).first()
+        if existing_user:
+            logger.warning(f"用户名已存在: {username}")
+            return {
+                "success": False,
+                "message": "用户名已存在",
+                "user": None
+            }
+        
+        # 调用注册服务
+        logger.info(f"开始注册用户: {username}")
+        result = auth_service.register_user(db, username, password, email)
+        
+        if result["success"]:
+            # 注册成功，双重验证用户是否真的在数据库中
+            user = result["user"]
+            logger.info(f"注册服务返回成功 - 用户ID: {user.id}, 用户名: {user.username}")
+            
+            # 验证用户是否真的存在
+            verify_user = db.query(User).filter(User.username == username).first()
+            if not verify_user:
+                logger.error(f"用户注册验证失败 - 用户不存在于数据库: {username}")
+                return {
+                    "success": False,
+                    "message": "注册验证失败，请重试",
+                    "user": None
+                }
+            
+            # 记录注册后的数据库状态
+            user_count_after = db.query(User).count()
+            logger.info(f"注册后用户总数: {user_count_after}")
+            
+            # 验证用户ID一致性
+            if user.id != verify_user.id:
+                logger.error(f"用户ID不一致 - 注册服务返回ID: {user.id}, 数据库查询ID: {verify_user.id}")
+                return {
+                    "success": False,
+                    "message": "注册验证失败，用户ID不一致",
+                    "user": None
+                }
+            
+            # 创建会话
+            session_id = None
+            try:
+                session_id = auth_service.create_session(db, user)
+                logger.info(f"用户会话创建成功 - 会话ID: {session_id[:10]}...")
+            except Exception as session_error:
+                logger.error(f"创建用户会话失败: {session_error}")
+                # 即使会话创建失败，用户已经注册成功，仍然返回成功
+                # 但记录错误日志
+            
+            # 返回302重定向响应
+            response = RedirectResponse(url="/landppt/dashboard", status_code=302)
+            
+            # 设置cookie
+            current_expire_minutes = auth_service._get_current_expire_minutes()
+            cookie_max_age = None if current_expire_minutes == 0 else current_expire_minutes * 60
+            
+            if session_id:
+                response.set_cookie(
+                    key="session_id",
+                    value=session_id,
+                    max_age=cookie_max_age,
+                    httponly=True,
+                    secure=False,
+                    samesite="lax"
+                )
+                logger.info(f"设置用户Cookie成功 - 用户名: {username}")
+            
+            logger.info(f"用户注册完成 - 用户名: {username} (ID: {user.id})")
+            return response
+        else:
+            # 注册失败，返回200状态码和错误信息
+            logger.warning(f"用户注册失败 - 用户名: {username}, 原因: {result['message']}")
+            return {
+                "success": False,
+                "message": result["message"],
+                "user": None
+            }
+            
+    except Exception as e:
+        logger.error(f"API registration error: {e}", exc_info=True)
+        # 注册失败，返回200状态码和错误信息
+        return {
+            "success": False,
+            "message": f"注册失败: {str(e)}",
+            "user": None
+        }
+
+
 # API endpoints for authentication
 @router.post("/api/auth/login")
 async def api_login(
+    request: Request,
     username: str = Form(...),
     password: str = Form(...),
     db: Session = Depends(get_db),
     auth_service: AuthService = Depends(get_auth_service)
 ):
-    """API login endpoint"""
-    user = auth_service.authenticate_user(db, username, password)
+    """API login endpoint - 登录成功返回302，失败返回200并提供信息"""
+    logger.info(f"收到API登录请求 - 用户名: {username}")
     
-    if not user:
-        raise HTTPException(status_code=401, detail="用户名或密码错误")
-    
-    session_id = auth_service.create_session(db, user)
-    
-    return {
-        "success": True,
-        "session_id": session_id,
-        "user": user.to_dict()
-    }
+    try:
+        # 验证用户
+        user = auth_service.authenticate_user(db, username, password)
+        
+        if not user:
+            logger.warning(f"API登录失败 - 用户名或密码错误: {username}")
+            # 登录失败返回200状态码和错误信息
+            return {
+                "success": False,
+                "message": "用户名或密码错误",
+                "user": None
+            }
+        
+        logger.info(f"API登录验证成功 - 用户名: {username} (ID: {user.id})")
+        
+        # 创建会话
+        session_id = auth_service.create_session(db, user)
+        logger.info(f"API登录会话创建成功 - 用户名: {username}, 会话ID: {session_id[:10]}...")
+        
+        # 登录成功返回302重定向
+        response = RedirectResponse(url="/landppt/dashboard", status_code=302)
+        
+        # 设置cookie
+        current_expire_minutes = auth_service._get_current_expire_minutes()
+        cookie_max_age = None if current_expire_minutes == 0 else current_expire_minutes * 60
+        
+        response.set_cookie(
+            key="session_id",
+            value=session_id,
+            max_age=cookie_max_age,
+            httponly=True,
+            secure=False,  # 生产环境使用HTTPS时设置为True
+            samesite="lax"
+        )
+        
+        logger.info(f"API登录成功完成 - 用户名: {username}")
+        return response
+        
+    except Exception as e:
+        logger.error(f"API登录异常 - 用户名: {username}, 错误: {e}", exc_info=True)
+        # 异常时也返回200状态码和错误信息
+        return {
+            "success": False,
+            "message": f"登录过程中发生错误: {str(e)}",
+            "user": None
+        }
 
 
 @router.post("/api/auth/logout")

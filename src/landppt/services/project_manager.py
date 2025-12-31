@@ -26,7 +26,7 @@ class ProjectManager:
         self.projects: Dict[str, PPTProject] = {}
         self.todo_boards: Dict[str, TodoBoard] = {}
     
-    async def create_project(self, request: PPTGenerationRequest) -> PPTProject:
+    async def create_project(self, request: PPTGenerationRequest, username: str) -> PPTProject:
         """Create a new PPT project with TODO board"""
         project_id = str(uuid.uuid4())
         

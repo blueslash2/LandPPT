@@ -76,6 +76,7 @@ class Project(Base):
     
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     project_id: Mapped[str] = mapped_column(String(36), unique=True, index=True)
+    username: Mapped[str] = mapped_column(String(50), index=True, nullable=False)  # 项目所有者用户名
     title: Mapped[str] = mapped_column(String(255), nullable=False)
     scenario: Mapped[str] = mapped_column(String(100), nullable=False)
     topic: Mapped[str] = mapped_column(String(255), nullable=False)

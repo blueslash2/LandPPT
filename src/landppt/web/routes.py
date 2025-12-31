@@ -561,8 +561,8 @@ async def web_dashboard(
 ):
     """Project dashboard with overview"""
     try:
-        # Get project statistics
-        projects_response = await ppt_service.project_manager.list_projects(page=1, page_size=100)
+        # Get project statistics - 只获取当前用户的项目
+        projects_response = await ppt_service.project_manager.list_projects(page=1, page_size=100, username=user.username)
         projects = projects_response.projects
 
         total_projects = len(projects)
@@ -604,10 +604,10 @@ async def web_projects_list(
     status: str = None,
     user: User = Depends(get_current_user_required)
 ):
-    """List all projects"""
+    """List all projects for current user"""
     try:
         projects_response = await ppt_service.project_manager.list_projects(
-            page=page, page_size=10, status=status
+            page=page, page_size=10, status=status, username=user.username
         )
 
         return templates.TemplateResponse("projects_list.html", {
@@ -1084,7 +1084,7 @@ async def web_create_project(
         )
 
         # Create project with TODO board (without starting workflow yet)
-        project = await ppt_service.project_manager.create_project(project_request)
+        project = await ppt_service.project_manager.create_project(project_request, username=user.username)
 
         # Update project status to in_progress
         await ppt_service.project_manager.update_project_status(project.project_id, "in_progress")

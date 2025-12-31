@@ -9,6 +9,7 @@ from pydantic import BaseModel
 from ..database.health_check import health_checker
 from ..database.migrations import migration_manager
 from ..services.db_project_manager import DatabaseProjectManager
+from ..auth.auth_service import get_current_user, User
 
 router = APIRouter(prefix="/api/database", tags=["database"])
 
@@ -135,7 +136,7 @@ async def run_migrations(
 
 
 @router.get("/projects/summary")
-async def get_projects_summary():
+async def get_projects_summary(current_user: User = Depends(get_current_user)):
     """
     Get summary of projects in database
     """
@@ -143,7 +144,7 @@ async def get_projects_summary():
         project_manager = DatabaseProjectManager()
         
         # Get project list
-        project_list = await project_manager.list_projects(page=1, page_size=100)
+        project_list = await project_manager.list_projects(page=1, page_size=100, username=current_user.username)
         
         # Calculate summary statistics
         total_projects = project_list.total

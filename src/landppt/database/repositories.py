@@ -39,7 +39,7 @@ class ProjectRepository:
         result = await self.session.execute(stmt)
         return result.scalar_one_or_none()
     
-    async def list_projects(self, page: int = 1, page_size: int = 10, status: Optional[str] = None) -> List[Project]:
+    async def list_projects(self, page: int = 1, page_size: int = 10, status: Optional[str] = None, username: Optional[str] = None) -> List[Project]:
         """List projects with pagination"""
         stmt = select(Project).options(
             selectinload(Project.todo_board).selectinload(TodoBoard.stages),
@@ -50,19 +50,25 @@ class ProjectRepository:
         if status:
             stmt = stmt.where(Project.status == status)
         
+        if username:
+            stmt = stmt.where(Project.username == username)
+        
         stmt = stmt.order_by(Project.updated_at.desc())
         stmt = stmt.offset((page - 1) * page_size).limit(page_size)
         
         result = await self.session.execute(stmt)
         return result.scalars().all()
     
-    async def count_projects(self, status: Optional[str] = None) -> int:
+    async def count_projects(self, status: Optional[str] = None, username: Optional[str] = None) -> int:
         """Count total projects"""
         from sqlalchemy import func
 
         stmt = select(func.count(Project.id))
         if status:
             stmt = stmt.where(Project.status == status)
+        
+        if username:
+            stmt = stmt.where(Project.username == username)
 
         result = await self.session.execute(stmt)
         return result.scalar() or 0

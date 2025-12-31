@@ -107,13 +107,14 @@ class DatabaseService:
             updated_at=db_project.updated_at
         )
     
-    async def create_project(self, request: PPTGenerationRequest) -> PPTProject:
+    async def create_project(self, request: PPTGenerationRequest, username: str) -> PPTProject:
         """Create a new project with todo board"""
         project_id = str(uuid.uuid4())
         
         # Create project
         project_data = {
             "project_id": project_id,
+            "username": username,
             "title": f"{request.topic} - {request.scenario}",
             "scenario": request.scenario,
             "topic": request.topic,
@@ -181,11 +182,11 @@ class DatabaseService:
             return None
         return self._convert_db_project_to_api(db_project)
     
-    async def list_projects(self, page: int = 1, page_size: int = 10, 
-                          status: Optional[str] = None) -> ProjectListResponse:
+    async def list_projects(self, page: int = 1, page_size: int = 10,
+                          status: Optional[str] = None, username: Optional[str] = None) -> ProjectListResponse:
         """List projects with pagination"""
-        db_projects = await self.project_repo.list_projects(page, page_size, status)
-        total = await self.project_repo.count_projects(status)
+        db_projects = await self.project_repo.list_projects(page, page_size, status, username)
+        total = await self.project_repo.count_projects(status, username)
         
         projects = [self._convert_db_project_to_api(db_project) for db_project in db_projects]
         
