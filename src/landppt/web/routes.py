@@ -28,7 +28,7 @@ from ..services.pdf_to_pptx_converter import get_pdf_to_pptx_converter
 from ..services.pyppeteer_pdf_converter import get_pdf_converter
 from ..core.config import ai_config
 from ..ai import get_ai_provider, get_role_provider, AIMessage, MessageRole
-from ..auth.middleware import get_current_user_required, get_current_user_optional
+from ..auth.middleware import get_current_user_required, get_current_user_optional, require_admin
 from ..database.models import User
 from ..database.database import get_db
 from sqlalchemy.orm import Session
@@ -255,7 +255,7 @@ async def web_home(
 @router.get("/ai-config", response_class=HTMLResponse)
 async def web_ai_config(
     request: Request,
-    user: User = Depends(get_current_user_required)
+    user: User = Depends(require_admin)
 ):
     """AI configuration page"""
     from ..services.config_service import get_config_service
@@ -6581,7 +6581,7 @@ def _cleanup_project_file_sync(project_file_path: str):
 @router.get("/global-master-templates", response_class=HTMLResponse)
 async def global_master_templates_page(
     request: Request,
-    user: User = Depends(get_current_user_required)
+    user: User = Depends(require_admin)
 ):
     """Global master templates management page"""
     try:
@@ -6599,7 +6599,7 @@ async def global_master_templates_page(
 @router.get("/image-gallery", response_class=HTMLResponse)
 async def image_gallery_page(
     request: Request,
-    user: User = Depends(get_current_user_required)
+    user: User = Depends(require_admin)
 ):
     """本地图床管理页面"""
     try:
